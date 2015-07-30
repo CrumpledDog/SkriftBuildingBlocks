@@ -1,0 +1,20 @@
+version: 0.0.1.{build}
+
+cache:
+  - packages -> **\packages.config              # preserve "packages" directory in the root of build folder but will reset it if packages.config is modified
+  - BuildingBlocks.Site\node_modules            # local npm modules
+  - C:\Users\appveyor\AppData\Roaming\npm-cache # npm cache
+  - C:\Ruby193\lib\ruby\gems\1.9.1              # ruby gems
+  - C:\Ruby193\bin                              # ruby gems
+  
+init:
+- ps: Update-NodeJsInstallation (Get-NodeJsLatestBuild 0) x64
+install:
+- node --version
+- npm --version
+- Call npm install -g grunt-cli
+- Call npm install -g bower
+- Call gem install sass
+build_script:
+- cd BuildTools\MSBuild\
+- Call Build.bat
